@@ -1,4 +1,5 @@
 import Cell from './Cell'
+import { is_related_to_selected_cell } from './utils/related_cells'
 
 interface Props {
 	Values: (number | undefined)[]
@@ -20,12 +21,20 @@ export default function Row(props: Props) {
 		Guess: guess,
 		SetGuess: set_guess,
 	} = props
+	const has_guessed = guess !== undefined
 	return (
 		<tr>
 			{values.map((value, i) => {
 				const cell_index = column * 9 + i
 				const selected = selected_cell === cell_index
+				const related_to_selected = is_related_to_selected_cell(
+					selected_cell,
+					column,
+					i
+				)
 				const completed = completed_cells.indexOf(cell_index) !== -1
+				const above_divider = column === 2 || column === 5
+				const left_of_divider = i === 2 || i === 5
 				return (
 					<Cell
 						key={i}
@@ -34,10 +43,16 @@ export default function Row(props: Props) {
 						Completed={completed}
 						Selected={selected}
 						SetSelectedCell={set_selected_cell}
+						RelatedToSelected={related_to_selected}
 						SetGuess={set_guess}
 						Incorrect={
-							selected && !completed && guess !== undefined
+							(selected && has_guessed && !completed) ||
+							(related_to_selected &&
+								has_guessed &&
+								guess === value)
 						}
+						LeftOfDivider={left_of_divider}
+						AboveDivider={above_divider}
 					/>
 				)
 			})}

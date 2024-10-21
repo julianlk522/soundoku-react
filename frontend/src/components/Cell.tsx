@@ -6,9 +6,12 @@ interface Props {
 	Value?: number
 	SetSelectedCell: React.Dispatch<React.SetStateAction<number | undefined>>
 	Selected: boolean
+	RelatedToSelected: boolean
 	Completed: boolean
 	SetGuess: React.Dispatch<React.SetStateAction<number | undefined>>
 	Incorrect: boolean
+	LeftOfDivider: boolean
+	AboveDivider?: boolean
 }
 
 export default function Cell(Props: Props) {
@@ -17,9 +20,12 @@ export default function Cell(Props: Props) {
 		Value: value,
 		SetSelectedCell: set_selected_cell,
 		Selected: selected,
+		RelatedToSelected: related_to_selected,
 		Completed: completed,
 		SetGuess: set_guess,
 		Incorrect: incorrect,
+		LeftOfDivider: left_of_divider,
+		AboveDivider: above_divider,
 	} = Props
 
 	const handle_keydown = useCallback(
@@ -55,7 +61,11 @@ export default function Cell(Props: Props) {
 			onKeyDown={handle_keydown}
 			className={`cell${completed ? ' completed' : ''}${
 				value && !completed ? ' filled' : ''
-			}${selected ? ' selected' : ''}${incorrect ? ' incorrect' : ''}`}
+			}${selected ? ' selected' : ''}${
+				related_to_selected ? ' related-to-selected' : ''
+			}${incorrect ? ' incorrect' : ''}${
+				left_of_divider ? ' left-of-divider' : ''
+			}${above_divider ? ' above-divider' : ''}`}
 			tabIndex={0}
 		>
 			{value}

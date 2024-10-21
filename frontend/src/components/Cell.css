@@ -3,15 +3,16 @@
 	height: 50px;
 	width: 50px;
 	font-weight: 700;
-}
-.filled {
-	background-color: var(--secondary);
+	outline: 1px solid black;
 }
 .selected {
 	background-color: var(--primary);
 }
 .incorrect {
 	background-color: var(--accent-muted);
+}
+.filled {
+	background-color: var(--secondary-soft);
 }
 .related-to-selected {
 	background-color: var(--primary-ultrasoft);
@@ -26,4 +27,11 @@
 .completed.selected {
 	background-color: var(--secondary-muted);
 	color: var(--text-light);
+}
+
+.above-divider {
+	border-bottom: 2px solid black;
+}
+.left-of-divider {
+	border-right: 2px solid black;
 }
