@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id          Int    @id @unique(map: "sqlite_autoindex_Users_1") @default(autoincrement())
+  name        String @unique(map: "sqlite_autoindex_Users_2")
+  pw          String
+  total_score Int    @default(0)
+  Wins        Wins[]
+}
+
+model Wins {
+  id         Int    @id @unique(map: "sqlite_autoindex_Wins_1") @default(autoincrement())
+  name       String
+  date       String
+  difficulty String
+  score      Int
+  duration   Int
+  errors     Int
+  Users      Users  @relation(fields: [name], references: [name], onDelete: NoAction, onUpdate: NoAction)
+}

@@ -4,7 +4,7 @@ export const errorHandler: ErrorRequestHandler = (
 	err: Error,
 	_,
 	res: Response,
-	//	need next arg to prevent "res.status is not a function" errors even while it is not being used
+	//	need "next" arg to prevent "res.status is not a function" errors even while it is not being used
 	next: NextFunction
 ) => {
 	const statusCode = res.statusCode ? res.statusCode : 500
