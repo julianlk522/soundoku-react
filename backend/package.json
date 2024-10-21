@@ -1,13 +1,15 @@
 {
 	"name": "soundoku-backend",
 	"version": "0.5.0",
-	"main": "index.js",
+	"main": "server.ts",
+	"type": "module",
 	"scripts": {
-		"backend": "nodemon server.ts",
 		"build": "tsc --build",
 		"start": "node ./dist/server.js",
+		"backend": "tsx server.ts",
 		"frontend": "npm run dev --prefix ../frontend",
-		"dev": "concurrently \"npm run backend\" \"npm run frontend\""
+		"dev": "tsx watch server.ts",
+		"dual-dev": "concurrently \"npm run backend\" \"npm run frontend\""
 	},
 	"keywords": [],
 	"author": "Julian Lindsay-Kaufman",
@@ -30,9 +32,8 @@
 		"@types/jsonwebtoken": "^9.0.7",
 		"@types/node": "^22.7.7",
 		"dotenv": "^16.4.5",
-		"nodemon": "^3.1.7",
 		"prisma": "^5.21.1",
-		"ts-node": "^10.9.2",
+		"tsx": "^4.19.1",
 		"typescript": "^5.6.3"
 	}
 }
