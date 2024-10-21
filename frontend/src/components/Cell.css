@@ -10,9 +10,6 @@
 .selected {
 	background-color: var(--primary);
 }
-.filled.selected {
-	background-color: var(--secondary-soft);
-}
 .incorrect {
 	background-color: var(--accent-muted);
 }
@@ -23,8 +20,10 @@
 	background-color: var(--accent-soft);
 }
 .completed {
-	background-color: var(--secondary-soft);
+	background-color: var(--secondary);
 }
+.filled.selected,
 .completed.selected {
 	background-color: var(--secondary-muted);
+	color: var(--text-light);
 }

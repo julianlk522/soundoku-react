@@ -1,30 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { makepuzzle, solvepuzzle } from 'sudoku'
 import './App.css'
 import Board from './components/Board'
 
-const difficulty = 'Very Easy'
-let board: (number | undefined)[] = makepuzzle()
-//  solvepuzzle() relies on a range of 0-8 so it must be run before
-// re-mapping values to 1-9
-const solution: number[] = solvepuzzle(board).map((num: number) => num + 1)
-board = board.map((num: number | undefined) =>
-	num != undefined ? num + 1 : undefined
-)
-console.log('solution: ', solution)
-board = fill_cells_to_decrease_difficulty(board)
-let rows = get_rows(board)
-let completed_cells = new Set<number>()
+function get_board_and_solution() {
+	let board: (number | undefined)[] = makepuzzle()
+	//  solvepuzzle() relies on a range of 0-8 so it must be run before
+	// re-mapping values to 1-9
+	const solution: number[] = solvepuzzle(board).map((num: number) => num + 1)
+	board = board.map((num: number | undefined) =>
+		num != undefined ? num + 1 : undefined
+	)
+	const difficulty = 'Very Easy'
+	board = fill_cells_to_decrease_difficulty(board, solution, difficulty)
 
-function get_rows(board: (number | undefined)[]) {
-	let rows: (number | undefined)[][] = []
-	for (let i = 0; i < 9; i++) {
-		rows.push(board.slice(i * 9, i * 9 + 9))
-	}
-	return rows
+	return [board, solution]
 }
 
-function fill_cells_to_decrease_difficulty(board: (number | undefined)[]) {
+function fill_cells_to_decrease_difficulty(
+	board: (number | undefined)[],
+	solution: (number | undefined)[],
+	difficulty?: string
+) {
 	let filled_nums_count = board.filter(
 		(val: number | undefined) => val !== undefined
 	).length
@@ -60,22 +57,37 @@ function get_desired_filled_nums_count(difficulty?: string) {
 }
 
 function App() {
+	const [initial_board, solution] = useRef(get_board_and_solution()).current
+
+	const [board, set_board] = useState<(number | undefined)[]>(initial_board)
 	const [selected_cell, set_selected_cell] = useState<number | undefined>(
 		undefined
 	)
+	const [completed_cells, set_completed_cells] = useState<number[]>([])
+	const [guess, set_guess] = useState<number | undefined>(undefined)
 
 	useEffect(() => {
-		console.log('selected_cell: ', selected_cell)
-	}, [selected_cell])
+		if (!selected_cell || !guess) return
+
+		if (guess === solution[selected_cell]) {
+			set_completed_cells([...completed_cells, selected_cell])
+			set_board((prev) => {
+				prev[selected_cell] = solution[selected_cell]
+				return prev
+			})
+		}
+	}, [guess])
 
 	return (
 		<main>
 			<h1>Soundoku</h1>
 			<Board
-				Rows={rows}
+				Board={board}
 				CompletedCells={completed_cells}
 				SelectedCell={selected_cell}
 				SetSelectedCell={set_selected_cell}
+				Guess={guess}
+				SetGuess={set_guess}
 			/>
 		</main>
 	)

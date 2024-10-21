@@ -3,26 +3,41 @@ import Cell from './Cell'
 interface Props {
 	Values: (number | undefined)[]
 	Column: number
-	CompletedCells: Set<number>
+	CompletedCells: number[]
 	SelectedCell?: number
 	SetSelectedCell: React.Dispatch<React.SetStateAction<number | undefined>>
-	// HandleGuess: (value: number) => void
+	Guess: number | undefined
+	SetGuess: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
-export default function Row(Props: Props) {
+export default function Row(props: Props) {
+	const {
+		Values: values,
+		Column: column,
+		CompletedCells: completed_cells,
+		SelectedCell: selected_cell,
+		SetSelectedCell: set_selected_cell,
+		Guess: guess,
+		SetGuess: set_guess,
+	} = props
 	return (
 		<tr>
-			{Props.Values.map((value, index) => {
-				const cell_index = Props.Column * 9 + index
+			{values.map((value, i) => {
+				const cell_index = column * 9 + i
+				const selected = selected_cell === cell_index
+				const completed = completed_cells.indexOf(cell_index) !== -1
 				return (
 					<Cell
-						key={index}
+						key={i}
 						Index={cell_index}
 						Value={value}
-						Completed={Props.CompletedCells.has(cell_index)}
-						SelectedCell={Props.SelectedCell}
-						SetSelectedCell={Props.SetSelectedCell}
-						// HandleGuess={handleGuess}
+						Completed={completed}
+						Selected={selected}
+						SetSelectedCell={set_selected_cell}
+						SetGuess={set_guess}
+						Incorrect={
+							selected && !completed && guess !== undefined
+						}
 					/>
 				)
 			})}
