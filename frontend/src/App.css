@@ -1,3 +1,38 @@
+html {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	line-height: 1.5;
+
+	color-scheme: light dark;
+	color: var(--text-white);
+	background-color: #13151a;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	--primary: hsl(240deg, 85%, 80%);
+	--primary-soft: hsl(240deg, 100%, 35%, 50%);
+	--primary-ultrasoft: hsl(240deg, 100%, 35%, 10%);
+	--primary-muted: hsl(225deg, 100%, 25%);
+	--secondary: hsl(164deg, 100%, 36%);
+	--secondary-soft: hsl(164deg, 100%, 36%, 50%);
+	--secondary-muted: hsl(164deg, 100%, 25%);
+	--accent: hsl(330deg, 100%, 50%);
+	--accent-soft: hsl(330deg, 100%, 25%, 25%);
+	--accent-muted: hsl(330deg, 65%, 25%, 65%);
+	--text: hsl(240deg, 50%, 10%);
+	--text-light: hsl(240deg, 100%, 95%);
+	--text-white: hsl(0deg 0% 100% / 87%);
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
 #root {
 	max-width: 1280px;
 	margin: 0 auto;

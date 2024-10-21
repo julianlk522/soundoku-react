@@ -1,0 +1,30 @@
+.cell {
+	background-color: #eee;
+	height: 50px;
+	width: 50px;
+	font-weight: 700;
+}
+.filled {
+	background-color: var(--secondary);
+}
+.selected {
+	background-color: var(--primary);
+}
+.filled.selected {
+	background-color: var(--secondary-soft);
+}
+.incorrect {
+	background-color: var(--accent-muted);
+}
+.related-to-selected {
+	background-color: var(--primary-ultrasoft);
+}
+.incorrect.related-to-selected {
+	background-color: var(--accent-soft);
+}
+.completed {
+	background-color: var(--secondary-soft);
+}
+.completed.selected {
+	background-color: var(--secondary-muted);
+}

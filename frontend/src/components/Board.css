@@ -1,0 +1,5 @@
+table#board {
+	margin: 0 auto;
+	color: var(--text);
+	background-color: #eee;
+}
