@@ -3,7 +3,7 @@ import { makepuzzle, solvepuzzle } from 'sudoku'
 import './App.css'
 import Board from './components/Board'
 
-function get_board_and_solution() {
+function get_board_and_solution(): [(number | undefined)[], number[]] {
 	let board: (number | undefined)[] = makepuzzle()
 	//  solvepuzzle() relies on a range of 0-8 so it must be run before
 	// re-mapping values to 1-9
@@ -83,6 +83,7 @@ function App() {
 			<h1>Soundoku</h1>
 			<Board
 				Board={board}
+				Solution={solution}
 				CompletedCells={completed_cells}
 				SelectedCell={selected_cell}
 				SetSelectedCell={set_selected_cell}
