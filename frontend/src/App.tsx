@@ -1,69 +1,25 @@
 import { useEffect, useRef, useState } from 'react'
-import { makepuzzle, solvepuzzle } from 'sudoku'
 import './App.css'
-import Board from './components/Board'
+import Game from './components/Game'
+import GameOverPopup from './components/GameOverPopup'
 import {
+	arpeggio,
 	get_audio_panning_from_cell_index,
 	play_audio,
 } from './components/utils/audio'
-
-function get_board_and_solution(): [(number | undefined)[], number[]] {
-	let board: (number | undefined)[] = makepuzzle()
-	//  solvepuzzle() relies on a range of 0-8 so it must be run before
-	// re-mapping values to 1-9
-	const solution: number[] = solvepuzzle(board).map((num: number) => num + 1)
-	board = board.map((num: number | undefined) =>
-		num != undefined ? num + 1 : undefined
-	)
-	const difficulty = 'Very Easy'
-	board = fill_cells_to_decrease_difficulty(board, solution, difficulty)
-
-	return [board, solution]
-}
-
-function fill_cells_to_decrease_difficulty(
-	board: (number | undefined)[],
-	solution: (number | undefined)[],
-	difficulty?: string
-) {
-	let filled_nums_count = board.filter(
-		(val: number | undefined) => val !== undefined
-	).length
-
-	let n = get_desired_filled_nums_count(difficulty) - filled_nums_count
-
-	const checked_indices = []
-	while (n > 0) {
-		const random_index = Math.floor(Math.random() * 81)
-		if (
-			checked_indices.indexOf(random_index) === -1 &&
-			board[random_index] === undefined
-		) {
-			board.splice(random_index, 1, solution[random_index])
-			n--
-		}
-		checked_indices.push(random_index)
-	}
-
-	return board
-}
-
-function get_desired_filled_nums_count(difficulty?: string) {
-	return difficulty === 'Very Easy'
-		? 70
-		: difficulty === 'Easy'
-		? 60
-		: difficulty === 'Medium'
-		? 55
-		: difficulty === 'Hard'
-		? 50
-		: 40
-}
+import { get_new_board_data } from './components/utils/board'
+import { get_time_in_minutes_and_seconds } from './components/utils/time'
 
 function App() {
-	const [initial_board, solution] = useRef(get_board_and_solution()).current
-
+	const [is_game_over, set_is_game_over] = useState(false)
+	const [errors, set_errors] = useState(0)
+	const [game_time, set_game_time] = useState(0)
+	//
+	// During game
+	const initial_board_data = useRef(get_new_board_data())
+	const [initial_board, initial_solution] = initial_board_data.current
 	const [board, set_board] = useState<(number | undefined)[]>(initial_board)
+	const [solution, set_solution] = useState<number[]>(initial_solution)
 	const [selected_cell, set_selected_cell] = useState<number | undefined>(
 		undefined
 	)
@@ -82,8 +38,13 @@ function App() {
 			set_completed_cells([...completed_cells, selected_cell])
 			set_board((prev) => {
 				prev[selected_cell] = solution[selected_cell]
+
+				// check if game over
+				if (prev.every((val) => val !== undefined)) handle_win()
 				return prev
 			})
+		} else {
+			set_errors((prev) => prev + 1)
 		}
 	}, [guess])
 
@@ -97,10 +58,23 @@ function App() {
 		)
 	}, [selected_cell])
 
+	useEffect(() => {
+		if (is_game_over) return
+		const game_timer = setInterval(() => {
+			set_game_time((prev) => prev + 1)
+		}, 1000)
+
+		return () => clearInterval(game_timer)
+	}, [is_game_over])
+
+	function handle_win() {
+		set_is_game_over(true)
+		arpeggio()
+	}
+
 	return (
 		<main>
-			<h1>Soundoku</h1>
-			<Board
+			<Game
 				Board={board}
 				Solution={solution}
 				CompletedCells={completed_cells}
@@ -108,7 +82,25 @@ function App() {
 				SetSelectedCell={set_selected_cell}
 				Guess={guess}
 				SetGuess={set_guess}
+				GameTime={get_time_in_minutes_and_seconds(game_time)}
+				Errors={errors}
+				IsGameOver={is_game_over}
 			/>
+
+			{is_game_over ? (
+				<GameOverPopup
+					GameTime={get_time_in_minutes_and_seconds(game_time)}
+					SetGameTime={set_game_time}
+					Errors={errors}
+					SetErrors={set_errors}
+					SetBoard={set_board}
+					SetSolution={set_solution}
+					SetCompletedCells={set_completed_cells}
+					SetSelectedCell={set_selected_cell}
+					SetGuess={set_guess}
+					SetIsGameOver={set_is_game_over}
+				/>
+			) : null}
 		</main>
 	)
 }
