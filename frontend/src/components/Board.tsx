@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
-import './Board.css'
-import Row from './Row'
-import { get_audio_panning_from_cell_index, play_audio } from './utils/audio'
+import { get_audio_panning_from_cell_index, play_audio } from '../utils/audio'
 import {
 	navigation_keys,
 	update_selected_cell_after_key_press,
-} from './utils/keyboard_navigation'
+} from '../utils/keyboard_navigation'
+import './Board.css'
+import Row from './Row'
 
 interface Props {
 	Board: (number | undefined)[]

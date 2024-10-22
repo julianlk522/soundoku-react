@@ -1,5 +1,5 @@
+import { is_related_to_selected_cell } from '../utils/related_cells'
 import Cell from './Cell'
-import { is_related_to_selected_cell } from './utils/related_cells'
 
 interface Props {
 	Values: (number | undefined)[]

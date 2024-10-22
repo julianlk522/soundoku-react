@@ -6,9 +6,9 @@ import {
 	arpeggio,
 	get_audio_panning_from_cell_index,
 	play_audio,
-} from './components/utils/audio'
-import { get_new_board_data } from './components/utils/board'
-import { get_time_in_minutes_and_seconds } from './components/utils/time'
+} from './utils/audio'
+import { get_new_board_data } from './utils/board'
+import { get_time_in_minutes_and_seconds } from './utils/time'
 
 function App() {
 	const [is_game_over, set_is_game_over] = useState(false)

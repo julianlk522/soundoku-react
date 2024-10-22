@@ -1,5 +1,5 @@
+import { get_new_board_data } from '../utils/board'
 import './GameOverPopup.css'
-import { get_new_board_data } from './utils/board'
 
 interface Props {
 	GameTime: string
