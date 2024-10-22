@@ -72,6 +72,16 @@ export function play_audio(tone: number, panning?: number) {
 	last_note_time = audio_ctx.currentTime
 }
 
+function stop_audio() {
+	if (!oscillator) return
+
+	gain_node.gain.exponentialRampToValueAtTime(
+		0.00001,
+		audio_ctx.currentTime + min_attack_time
+	)
+	oscillator.stop(audio_ctx.currentTime + min_attack_time)
+}
+
 function init(panning?: number) {
 	oscillator = audio_ctx.createOscillator()
 	gain_node = audio_ctx.createGain()
@@ -107,16 +117,6 @@ function generate_oscillation(toneIndex: number) {
 	oscillator.stop(now + note_duration)
 }
 
-function stop_audio() {
-	if (!oscillator) return
-
-	gain_node.gain.exponentialRampToValueAtTime(
-		0.00001,
-		audio_ctx.currentTime + min_attack_time
-	)
-	oscillator.stop(audio_ctx.currentTime + min_attack_time)
-}
-
 function recalculate_attack_time() {
 	if (time_since_last_note! < min_wait_period_before_cutting_attack) {
 		attack_time = Math.min(
@@ -141,4 +141,8 @@ export function arpeggio() {
 			index++
 		} else clearInterval(arpeggio_interval)
 	}, 200)
+}
+
+export function get_audio_panning_from_cell_index(index: number) {
+	return (index % 9) / 4 - 1
 }

@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { makepuzzle, solvepuzzle } from 'sudoku'
 import './App.css'
 import Board from './components/Board'
+import {
+	get_audio_panning_from_cell_index,
+	play_audio,
+} from './components/utils/audio'
 
 function get_board_and_solution(): [(number | undefined)[], number[]] {
 	let board: (number | undefined)[] = makepuzzle()
@@ -66,9 +70,14 @@ function App() {
 	const [completed_cells, set_completed_cells] = useState<number[]>([])
 	const [guess, set_guess] = useState<number | undefined>(undefined)
 
+	// handle guess
 	useEffect(() => {
 		if (!selected_cell || !guess) return
 
+		// play tone of guessed number
+		play_audio(guess - 1, get_audio_panning_from_cell_index(selected_cell))
+
+		// verify
 		if (guess === solution[selected_cell]) {
 			set_completed_cells([...completed_cells, selected_cell])
 			set_board((prev) => {
@@ -77,6 +86,16 @@ function App() {
 			})
 		}
 	}, [guess])
+
+	// play audio from cell navigation
+	useEffect(() => {
+		if (!selected_cell) return
+
+		play_audio(
+			solution[selected_cell] - 1,
+			get_audio_panning_from_cell_index(selected_cell)
+		)
+	}, [selected_cell])
 
 	return (
 		<main>

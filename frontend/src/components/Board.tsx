@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import './Board.css'
 import Row from './Row'
-import { play_audio } from './utils/audio'
+import { get_audio_panning_from_cell_index, play_audio } from './utils/audio'
 import {
 	navigation_keys,
 	update_selected_cell_after_key_press,
@@ -36,7 +36,7 @@ export default function Board(props: Props) {
 			if (event.key === 'Enter' || event.key === ' ') {
 				play_audio(
 					props.Solution[props.SelectedCell] - 1, // tone (1 per number, 0-8)
-					get_panning_from_index(props.SelectedCell) // panning (-1 to 1)
+					get_audio_panning_from_cell_index(props.SelectedCell) // panning (-1 to 1)
 				)
 			}
 
@@ -52,10 +52,6 @@ export default function Board(props: Props) {
 		},
 		[props.SelectedCell]
 	)
-
-	function get_panning_from_index(index: number) {
-		return (index % 9) / 4 - 1
-	}
 
 	return (
 		<table id='board'>
