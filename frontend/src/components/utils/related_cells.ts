@@ -3,7 +3,7 @@ export function is_related_to_selected_cell(
 	column: number,
 	index_in_row: number
 ) {
-	if (!selected_cell) {
+	if (selected_cell === undefined) {
 		return false
 	}
 	if (is_selected_cell(selected_cell, column, index_in_row)) {
