@@ -1,9 +1,15 @@
 dialog#game-over {
-	position: absolute;
 	top: 25%;
+	min-width: min(100%, 800px);
 }
 
 p#victory-flex {
 	font-size: 2rem;
 	margin: 0;
+}
+
+div#game-over-actions {
+	display: flex;
+	justify-content: center;
+	gap: 5px;
 }

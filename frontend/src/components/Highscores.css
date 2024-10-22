@@ -1,0 +1,41 @@
+#highscores {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+}
+#highscores table {
+	table-layout: fixed;
+	border-collapse: collapse;
+	text-align: center;
+	min-width: min(100%, 800px);
+}
+th {
+	color: var(--color-text-light);
+}
+thead tr th {
+	border-bottom: 2px solid var(--color-text-light);
+}
+tr:nth-child(even) {
+	background-color: var(--color-text-light);
+}
+tbody tr:nth-child(even) th {
+	color: var(--color-text);
+}
+tr:nth-child(odd) td {
+	color: var(--color-text-light);
+}
+
+div#loading {
+	position: absolute;
+	top: calc(50% - 13px);
+	width: 25px;
+	height: 25px;
+	background-image: url('../assets/loading.svg');
+	background-position: center;
+}
+
+button#close-highscores {
+	margin-top: 1rem;
+}
