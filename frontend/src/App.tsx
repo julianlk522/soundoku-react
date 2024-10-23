@@ -115,6 +115,7 @@ function App() {
 					SetSelectedCell={set_selected_cell}
 					SetGuess={set_guess}
 					SetIsGameOver={set_is_game_over}
+					SetIsSignedIn={set_is_signed_in}
 				/>
 			) : null}
 		</main>

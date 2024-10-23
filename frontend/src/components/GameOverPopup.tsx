@@ -20,6 +20,7 @@ interface Props {
 	SetSelectedCell: React.Dispatch<React.SetStateAction<number | undefined>>
 	SetGuess: React.Dispatch<React.SetStateAction<number | undefined>>
 	SetIsGameOver: React.Dispatch<React.SetStateAction<boolean>>
+	SetIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const highscores_query_client = new QueryClient()
@@ -36,6 +37,7 @@ export default function GameOverPopup(props: Props) {
 		SetSelectedCell: set_selected_cell,
 		SetGuess: set_guess,
 		SetIsGameOver: set_is_game_over,
+		SetIsSignedIn: set_is_signed_in,
 	} = props
 	const formatted_time = get_time_in_minutes_and_seconds(time)
 
@@ -128,6 +130,7 @@ export default function GameOverPopup(props: Props) {
 					SetIsWaitingForAuthToSubmit={
 						set_is_waiting_for_auth_to_submit
 					}
+					SetIsSignedIn={set_is_signed_in}
 				/>
 			) : (
 				<>

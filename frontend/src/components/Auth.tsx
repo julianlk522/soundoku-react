@@ -3,12 +3,14 @@ import { USERS_ENDPOINT } from '../constants'
 interface Props {
 	SetShowAuth: React.Dispatch<React.SetStateAction<boolean>>
 	SetIsWaitingForAuthToSubmit: React.Dispatch<React.SetStateAction<boolean>>
+	SetIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function Auth(props: Props) {
 	const {
 		SetShowAuth: set_show_auth,
 		SetIsWaitingForAuthToSubmit: set_is_waiting_for_auth_to_submit,
+		SetIsSignedIn: set_is_signed_in,
 	} = props
 	async function authenticate(
 		event: React.FormEvent<HTMLFormElement>,
@@ -45,6 +47,7 @@ export default function Auth(props: Props) {
 		localStorage.setItem('name', name.toString())
 		set_show_auth(false)
 		set_is_waiting_for_auth_to_submit(true)
+		set_is_signed_in(true)
 	}
 
 	return (
