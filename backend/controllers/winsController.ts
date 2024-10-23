@@ -47,7 +47,8 @@ export const addWin = asyncHandler(async (req, res) => {
 		throw new Error('Invalid difficulty level provided')
 	}
 
-	if (!process.env.WIN_SECRET) {
+	const win_secret = process.env.WIN_SECRET
+	if (!win_secret) {
 		res.status(500)
 		throw new Error('Could not access hash secret')
 	}
@@ -55,7 +56,7 @@ export const addWin = asyncHandler(async (req, res) => {
 	const unserializedWin = { name, difficulty, duration, errors }
 	const serializedWin = JSON.stringify(unserializedWin)
 
-	const serverHash = createHmac('sha256', process.env.WIN_SECRET)
+	const serverHash = createHmac('sha256', win_secret)
 		.update(serializedWin)
 		.digest('base64')
 
@@ -68,12 +69,16 @@ export const addWin = asyncHandler(async (req, res) => {
 	try {
 		await client.wins.create({
 			data: {
-				name,
 				date: new Date().toISOString().split('T')[0],
 				difficulty: difficulty.split(' ').join('_'),
 				duration: +duration,
 				errors: +errors,
-				score: +score,
+				score: score,
+				Users: {
+					connect: {
+						name: name,
+					},
+				},
 			},
 		})
 
@@ -87,10 +92,11 @@ export const addWin = asyncHandler(async (req, res) => {
 				},
 			},
 		})
-	} catch (error) {
+	} catch {
 		res.status(500).json({
 			error: 'Something went wrong while saving your win',
 		})
+		return
 	}
 
 	res.status(201).json({ name, difficulty, duration, errors, score })

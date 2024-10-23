@@ -2,9 +2,14 @@ import { USERS_ENDPOINT } from '../constants'
 
 interface Props {
 	SetShowAuth: React.Dispatch<React.SetStateAction<boolean>>
+	SetIsWaitingForAuthToSubmit: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function Auth(props: Props) {
+	const {
+		SetShowAuth: set_show_auth,
+		SetIsWaitingForAuthToSubmit: set_is_waiting_for_auth_to_submit,
+	} = props
 	async function authenticate(
 		event: React.FormEvent<HTMLFormElement>,
 		is_login?: boolean
@@ -38,7 +43,8 @@ export default function Auth(props: Props) {
 
 		localStorage.setItem('token', data.token)
 		localStorage.setItem('name', name.toString())
-		props.SetShowAuth(false)
+		set_show_auth(false)
+		set_is_waiting_for_auth_to_submit(true)
 	}
 
 	return (
@@ -69,7 +75,9 @@ export default function Auth(props: Props) {
 				<input type='submit' value='Signup' />
 			</form>
 
-			<button>Skip (play locally)</button>
+			<button onClick={() => set_show_auth(false)}>
+				Skip (play locally)
+			</button>
 		</>
 	)
 }
