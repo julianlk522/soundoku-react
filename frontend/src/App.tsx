@@ -2,19 +2,23 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import Game from './components/Game'
 import GameOverPopup from './components/GameOverPopup'
+import UserInfo from './components/UserInfo'
 import {
 	arpeggio,
 	get_audio_panning_from_cell_index,
 	play_audio,
 } from './utils/audio'
 import { get_new_board_data } from './utils/board'
+import { get_name_and_token } from './utils/localstorage'
 import { get_time_in_minutes_and_seconds } from './utils/time'
 
 function App() {
+	const [is_signed_in, set_is_signed_in] = useState(false)
+	const [name, token] = get_name_and_token()
 	const [is_game_over, set_is_game_over] = useState(false)
 	const [errors, set_errors] = useState(0)
 	const [game_time, set_game_time] = useState(0)
-	//
+
 	// During game
 	const initial_board_data = useRef(get_new_board_data())
 	const [initial_board, initial_solution] = initial_board_data.current
@@ -67,6 +71,14 @@ function App() {
 		return () => clearInterval(game_timer)
 	}, [is_game_over])
 
+	// check initially if user is signed in
+	useEffect(() => {
+		const [name, token] = get_name_and_token()
+		if (!token || !name) return
+
+		set_is_signed_in(true)
+	}, [])
+
 	function handle_win() {
 		set_is_game_over(true)
 		arpeggio()
@@ -87,9 +99,13 @@ function App() {
 				IsGameOver={is_game_over}
 			/>
 
+			{is_signed_in ? (
+				<UserInfo Name={name ?? ''} Token={token ?? ''} />
+			) : null}
+
 			{is_game_over ? (
 				<GameOverPopup
-					GameTime={get_time_in_minutes_and_seconds(game_time)}
+					GameTime={game_time}
 					SetGameTime={set_game_time}
 					Errors={errors}
 					SetErrors={set_errors}
