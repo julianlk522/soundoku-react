@@ -106,6 +106,14 @@ export default function GameOverPopup(props: Props) {
 			console.error('Failed to submit score: ', submit_score_data)
 			return
 		}
+
+		// update UserInfo total score UI
+		const total_score_elem = document.getElementById('total-score')
+		if (total_score_elem && total_score_elem.textContent) {
+			total_score_elem.textContent =
+				+total_score_elem.textContent + submit_score_data.score
+		}
+
 		set_can_submit_score(false)
 	}
 
