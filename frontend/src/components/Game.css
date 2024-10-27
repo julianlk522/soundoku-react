@@ -1,5 +1,20 @@
+h1:has(+ p#difficulty-subtitle) {
+	margin-bottom: 0;
+}
+
 section#game.game-over {
 	pointer-events: none;
 	opacity: 5%;
 	filter: blur(1px);
+}
+
+p#difficulty-subtitle {
+	margin-top: 0;
+}
+
+p#time {
+	margin-bottom: 0;
+}
+p#errors {
+	margin-top: 0;
 }

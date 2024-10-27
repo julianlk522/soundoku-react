@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
+import DifficultySelect from './components/DifficultySelect'
 import Game from './components/Game'
 import GameOverPopup from './components/GameOverPopup'
 import UserInfo from './components/UserInfo'
+import { DifficultyLevel } from './types'
 import {
 	arpeggio,
 	get_audio_panning_from_cell_index,
@@ -13,22 +15,44 @@ import { get_name_and_token } from './utils/localstorage'
 import { get_time_in_minutes_and_seconds } from './utils/time'
 
 function App() {
+	// Auth
 	const [is_signed_in, set_is_signed_in] = useState(false)
 	const [name, token] = get_name_and_token()
-	const [is_game_over, set_is_game_over] = useState(false)
+
+	// Game Stats
+	const [difficulty, set_difficulty] = useState<DifficultyLevel | undefined>(
+		undefined
+	)
 	const [errors, set_errors] = useState(0)
 	const [game_time, set_game_time] = useState(0)
+	const [is_game_over, set_is_game_over] = useState(false)
 
 	// During game
-	const initial_board_data = useRef(get_new_board_data())
-	const [initial_board, initial_solution] = initial_board_data.current
-	const [board, set_board] = useState<(number | undefined)[]>(initial_board)
-	const [solution, set_solution] = useState<number[]>(initial_solution)
+	const [board, set_board] = useState<(number | undefined)[] | undefined>(
+		undefined
+	)
+	const [solution, set_solution] = useState<number[] | undefined>(undefined)
 	const [selected_cell, set_selected_cell] = useState<number | undefined>(
 		undefined
 	)
 	const [completed_cells, set_completed_cells] = useState<number[]>([])
 	const [guess, set_guess] = useState<number | undefined>(undefined)
+
+	// setup new board once difficulty has been assigned
+	useEffect(() => {
+		if (!difficulty) return
+
+		setup_new_board(difficulty)
+	}, [difficulty])
+
+	const setup_new_board = useCallback(
+		(difficulty: DifficultyLevel) => {
+			const [new_board, new_solution] = get_new_board_data(difficulty)
+			set_board(new_board)
+			set_solution(new_solution)
+		},
+		[difficulty]
+	)
 
 	// handle guess
 	useEffect(() => {
@@ -38,13 +62,13 @@ function App() {
 		play_audio(guess - 1, get_audio_panning_from_cell_index(selected_cell))
 
 		// verify
-		if (guess === solution[selected_cell]) {
+		if (guess === solution![selected_cell]) {
 			set_completed_cells([...completed_cells, selected_cell])
 			set_board((prev) => {
-				prev[selected_cell] = solution[selected_cell]
+				prev![selected_cell] = solution![selected_cell]
 
 				// check if game over
-				if (prev.every((val) => val !== undefined)) handle_win()
+				if (prev!.every((val) => val !== undefined)) handle_win()
 				return prev
 			})
 		} else {
@@ -52,9 +76,14 @@ function App() {
 		}
 	}, [guess])
 
+	function handle_win() {
+		set_is_game_over(true)
+		arpeggio()
+	}
+
 	// play audio from cell navigation
 	useEffect(() => {
-		if (!selected_cell) return
+		if (!solution || !selected_cell) return
 
 		play_audio(
 			solution[selected_cell] - 1,
@@ -62,14 +91,15 @@ function App() {
 		)
 	}, [selected_cell])
 
+	// start timer when game start, clear timer when game ends
 	useEffect(() => {
-		if (is_game_over) return
+		if (!board || is_game_over) return
 		const game_timer = setInterval(() => {
 			set_game_time((prev) => prev + 1)
 		}, 1000)
 
 		return () => clearInterval(game_timer)
-	}, [is_game_over])
+	}, [board, is_game_over])
 
 	// check initially if user is signed in
 	useEffect(() => {
@@ -79,25 +109,25 @@ function App() {
 		set_is_signed_in(true)
 	}, [])
 
-	function handle_win() {
-		set_is_game_over(true)
-		arpeggio()
-	}
-
 	return (
 		<main>
-			<Game
-				Board={board}
-				Solution={solution}
-				CompletedCells={completed_cells}
-				SelectedCell={selected_cell}
-				SetSelectedCell={set_selected_cell}
-				Guess={guess}
-				SetGuess={set_guess}
-				GameTime={get_time_in_minutes_and_seconds(game_time)}
-				Errors={errors}
-				IsGameOver={is_game_over}
-			/>
+			{!difficulty ? (
+				<DifficultySelect SetDifficulty={set_difficulty} />
+			) : board && solution ? (
+				<Game
+					Difficulty={difficulty}
+					Board={board}
+					Solution={solution}
+					CompletedCells={completed_cells}
+					SelectedCell={selected_cell}
+					SetSelectedCell={set_selected_cell}
+					Guess={guess}
+					SetGuess={set_guess}
+					GameTime={get_time_in_minutes_and_seconds(game_time)}
+					Errors={errors}
+					IsGameOver={is_game_over}
+				/>
+			) : null}
 
 			{is_signed_in ? (
 				<UserInfo Name={name ?? ''} Token={token ?? ''} />
@@ -105,6 +135,7 @@ function App() {
 
 			{is_game_over ? (
 				<GameOverPopup
+					Difficulty={difficulty}
 					GameTime={game_time}
 					SetGameTime={set_game_time}
 					Errors={errors}

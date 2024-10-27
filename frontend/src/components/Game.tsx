@@ -1,7 +1,9 @@
+import { DifficultyLevel } from '../types'
 import Board from './Board'
 import './Game.css'
 
 interface Props {
+	Difficulty: DifficultyLevel
 	Board: (number | undefined)[]
 	Solution: number[]
 	CompletedCells: number[]
@@ -16,6 +18,7 @@ interface Props {
 
 export default function Game(props: Props) {
 	const {
+		Difficulty: difficulty,
 		Board: board,
 		Solution: solution,
 		CompletedCells: completed_cells,
@@ -30,6 +33,7 @@ export default function Game(props: Props) {
 	return (
 		<section id='game' className={is_game_over ? 'game-over' : ''}>
 			<h1>Soundoku</h1>
+			<p id='difficulty-subtitle'>({difficulty})</p>
 			<Board
 				Board={board}
 				Solution={solution}
@@ -39,8 +43,12 @@ export default function Game(props: Props) {
 				Guess={guess}
 				SetGuess={set_guess}
 			/>
-			<p id='time'>Time: {game_time}</p>
-			<p id='errors'>Errors: {errors}</p>
+			<p id='time'>
+				<strong>Time</strong>: {game_time}
+			</p>
+			<p id='errors'>
+				<strong>Errors</strong>: {errors}
+			</p>
 		</section>
 	)
 }

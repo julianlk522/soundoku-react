@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import CryptoJS from 'crypto-js'
 import { useEffect, useState } from 'react'
 import { WINS_ENDPOINT } from '../constants'
+import { DifficultyLevel } from '../types'
 import { get_new_board_data } from '../utils/board'
 import { get_name_and_token } from '../utils/localstorage'
 import { get_time_in_minutes_and_seconds } from '../utils/time'
@@ -10,12 +11,15 @@ import './GameOverPopup.css'
 import Highscores from './Highscores'
 
 interface Props {
+	Difficulty: DifficultyLevel | undefined
 	GameTime: number
 	SetGameTime: React.Dispatch<React.SetStateAction<number>>
 	Errors: number
 	SetErrors: React.Dispatch<React.SetStateAction<number>>
-	SetBoard: React.Dispatch<React.SetStateAction<(number | undefined)[]>>
-	SetSolution: React.Dispatch<React.SetStateAction<number[]>>
+	SetBoard: React.Dispatch<
+		React.SetStateAction<(number | undefined)[] | undefined>
+	>
+	SetSolution: React.Dispatch<React.SetStateAction<number[] | undefined>>
 	SetCompletedCells: React.Dispatch<React.SetStateAction<number[]>>
 	SetSelectedCell: React.Dispatch<React.SetStateAction<number | undefined>>
 	SetGuess: React.Dispatch<React.SetStateAction<number | undefined>>
@@ -27,6 +31,7 @@ const highscores_query_client = new QueryClient()
 
 export default function GameOverPopup(props: Props) {
 	const {
+		Difficulty: difficulty,
 		GameTime: time,
 		SetGameTime: set_game_time,
 		Errors: errors,
@@ -53,7 +58,7 @@ export default function GameOverPopup(props: Props) {
 		set_game_time(0)
 
 		// generate new board
-		const [board, solution] = get_new_board_data()
+		const [board, solution] = get_new_board_data(difficulty ?? 'Very Easy')
 		set_board(board)
 		set_solution(solution)
 		set_completed_cells([])

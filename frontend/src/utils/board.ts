@@ -1,6 +1,9 @@
 import { makepuzzle, solvepuzzle } from 'sudoku'
+import { DifficultyLevel } from '../types'
 
-export function get_new_board_data(): [(number | undefined)[], number[]] {
+export function get_new_board_data(
+	difficulty: DifficultyLevel
+): [(number | undefined)[], number[]] {
 	let board: (number | undefined)[] = makepuzzle()
 
 	//  solvepuzzle() relies on a 0-8 range so it must be run before
@@ -9,7 +12,6 @@ export function get_new_board_data(): [(number | undefined)[], number[]] {
 	board = board.map((num: number | undefined) =>
 		num != undefined ? num + 1 : undefined
 	)
-	const difficulty = 'Very Easy'
 	board = fill_cells_to_decrease_difficulty(board, solution, difficulty)
 
 	return [board, solution]

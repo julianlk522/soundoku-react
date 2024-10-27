@@ -1,3 +1,12 @@
+export const difficulty_levels = [
+	'Very Easy',
+	'Easy',
+	'Medium',
+	'Hard',
+	'Very Hard',
+] as const
+export type DifficultyLevel = (typeof difficulty_levels)[number]
+
 type WinScore = {
 	row_num: number
 	name: string
