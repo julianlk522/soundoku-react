@@ -1,0 +1,8 @@
+select#difficulty-select {
+	display: block;
+	margin: 0 auto;
+}
+
+button#start-game {
+	margin-top: 1rem;
+}
