@@ -1,4 +1,4 @@
-type Score = {
+type WinScore = {
 	row_num: number
 	name: string
 	date: string
@@ -7,5 +7,17 @@ type Score = {
 	duration: string
 	errors: number
 }
+type UserScore = {
+	row_num: number
+	name: string
+	total_score: number
+	games_played: number
+}
 
-export type { Score }
+const isWinScores = (ws: any): ws is WinScore[] =>
+	ws[0].difficulty !== undefined
+const isUserScores = (us: any): us is UserScore[] =>
+	us[0].games_played !== undefined
+
+export { isUserScores, isWinScores }
+export type { UserScore, WinScore }

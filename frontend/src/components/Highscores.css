@@ -36,6 +36,8 @@ div#loading {
 	background-position: center;
 }
 
-button#close-highscores {
+div#highscores-actions {
+	display: flex;
+	gap: 1rem;
 	margin-top: 1rem;
 }

@@ -1,7 +1,7 @@
-import { Score } from '../types'
+import { WinScore } from '../types'
 import { get_time_in_minutes_and_seconds } from './time'
 
-export function format_score(score: Score) {
+export function format_score(score: WinScore) {
 	score.date = format_date(new Date(score.date))
 	score.duration = get_time_in_minutes_and_seconds(+score.duration)
 	score.difficulty = score.difficulty
