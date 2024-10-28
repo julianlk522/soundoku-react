@@ -106,20 +106,29 @@ export default function GameOverPopup(props: Props) {
 				hash: hash,
 			}),
 		})
-		const submit_score_data = await submit_score_resp.json()
-		if (!submit_score_data.score) {
-			console.error('Failed to submit score: ', submit_score_data)
+		if (!submit_score_resp.ok) {
+			console.error('Failed to submit score: ', submit_score_resp)
+			set_show_auth(true)
 			return
 		}
+		try {
+			const submit_score_data = await submit_score_resp.json()
+			if (!submit_score_data.score) {
+				console.error('Failed to submit score: ', submit_score_data)
+				return
+			}
 
-		// update UserInfo total score UI
-		const total_score_elem = document.getElementById('total-score')
-		if (total_score_elem && total_score_elem.textContent) {
-			total_score_elem.textContent =
-				+total_score_elem.textContent + submit_score_data.score
+			// update UserInfo total score UI
+			const total_score_elem = document.getElementById('total-score')
+			if (total_score_elem && total_score_elem.textContent) {
+				total_score_elem.textContent =
+					+total_score_elem.textContent + submit_score_data.score
+			}
+
+			set_can_submit_score(false)
+		} catch (error) {
+			console.error('Failed to parse submission response: ', error)
 		}
-
-		set_can_submit_score(false)
 	}
 
 	// submit score if user hit "submit score" and was redirected to signup/login
@@ -147,12 +156,10 @@ export default function GameOverPopup(props: Props) {
 				/>
 			) : (
 				<>
-					<h2>You won! Congratulations!</h2>
+					<h2>You won!</h2>
 					<p id='victory-flex'>💪✨🏆🎉</p>
-					<p>Your time was {formatted_time}</p>
-					<p id='errors'>
-						(with {errors} {errors === 1 ? 'error' : 'errors'})
-					</p>
+					<span>{formatted_time} | </span>
+					<span id='errors'>{errors}</span>
 					<div id='game-over-actions'>
 						<button onClick={handle_replay}>Replay</button>
 						<button onClick={() => set_show_highscores(true)}>

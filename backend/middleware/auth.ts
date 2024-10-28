@@ -34,7 +34,6 @@ const auth = asyncHandler(async (req: reqWithUserId, res, next) => {
 			process.env.JWT_SECRET
 		) as jwtPayloadWithId
 
-		//	check if user exists
 		const user = await client.users.findFirst({
 			where: { id: +decoded.id },
 		})
