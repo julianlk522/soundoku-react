@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import { get_audio_panning_from_cell_index, play_audio } from '../utils/audio'
 import {
 	navigation_keys,
@@ -17,14 +17,14 @@ interface Props {
 	SetGuess: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
-export default function Board(props: Props) {
-	const get_rows = useCallback((board: (number | undefined)[]) => {
+function Board(props: Props) {
+	const rows = useMemo(() => {
 		let rows: (number | undefined)[][] = []
 		for (let i = 0; i < 9; i++) {
-			rows.push(board.slice(i * 9, i * 9 + 9))
+			rows.push(props.Board.slice(i * 9, i * 9 + 9))
 		}
 		return rows
-	}, [])
+	}, [props.Board])
 
 	const handle_keydown = useCallback(
 		(event: React.KeyboardEvent<HTMLTableSectionElement>) => {
@@ -58,7 +58,7 @@ export default function Board(props: Props) {
 	return (
 		<table id='board'>
 			<tbody onKeyDown={handle_keydown}>
-				{get_rows(props.Board).map((row, index) => (
+				{rows.map((row, index) => (
 					<Row
 						key={index}
 						Values={row}
@@ -74,3 +74,5 @@ export default function Board(props: Props) {
 		</table>
 	)
 }
+
+export default memo(Board)

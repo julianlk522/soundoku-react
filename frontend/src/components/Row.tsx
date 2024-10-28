@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { is_related_to_selected_cell } from '../utils/related_cells'
 import Cell from './Cell'
 
@@ -11,7 +12,7 @@ interface Props {
 	SetGuess: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
-export default function Row(props: Props) {
+function Row(props: Props) {
 	const {
 		Values: values,
 		Column: column,
@@ -59,3 +60,5 @@ export default function Row(props: Props) {
 		</tr>
 	)
 }
+
+export default memo(Row)

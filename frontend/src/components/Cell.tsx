@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useRef } from 'react'
+import { memo, RefObject, useCallback, useEffect, useRef } from 'react'
 import './Cell.css'
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 	AboveDivider?: boolean
 }
 
-export default function Cell(Props: Props) {
+function Cell(Props: Props) {
 	const {
 		Index: index,
 		Value: value,
@@ -67,3 +67,5 @@ export default function Cell(Props: Props) {
 		</td>
 	)
 }
+
+export default memo(Cell)
