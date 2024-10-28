@@ -39,3 +39,17 @@ html {
 	padding: 2rem;
 	text-align: center;
 }
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+html,
+body,
+#root,
+main {
+	height: 100%;
+}

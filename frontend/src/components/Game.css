@@ -1,7 +1,3 @@
-h1:has(+ p#difficulty-subtitle) {
-	margin-bottom: 0;
-}
-
 section#game.game-over {
 	pointer-events: none;
 	opacity: 5%;
@@ -17,4 +13,8 @@ p#time {
 }
 p#errors {
 	margin-top: 0;
+
+	span#error-count.has-errors {
+		color: orangered;
+	}
 }

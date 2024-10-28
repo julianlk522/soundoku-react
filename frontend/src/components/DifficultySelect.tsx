@@ -10,8 +10,8 @@ interface Props {
 export default function DifficultySelect(props: Props) {
 	const set_difficulty = props.SetDifficulty
 	return (
-		<div>
-			<h1>Select Difficulty Level</h1>
+		<>
+			<h1>Soundoku</h1>
 			<select name='difficulty' id='difficulty-select'>
 				{difficulty_levels.map((difficulty) => (
 					<option key={difficulty} value={difficulty}>
@@ -32,6 +32,6 @@ export default function DifficultySelect(props: Props) {
 			>
 				Start
 			</button>
-		</div>
+		</>
 	)
 }
