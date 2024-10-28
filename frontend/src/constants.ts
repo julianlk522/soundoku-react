@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:1999'
+const API_URL = 'https://soundoku-react-production.up.railway.app'
 const USERS_ENDPOINT = `${API_URL}/users`
 const WINS_ENDPOINT = `${API_URL}/wins`
 

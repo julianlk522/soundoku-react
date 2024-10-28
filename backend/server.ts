@@ -1,6 +1,8 @@
 import cors from 'cors'
 import express from 'express'
 import { errorHandler } from './middleware/error'
+import userRoutes from './routes/userRoutes'
+import winRoutes from './routes/winRoutes'
 
 const app = express()
 
@@ -11,10 +13,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(errorHandler)
 
 //  routes
-import userRoutes from './routes/userRoutes'
 app.use('/users', userRoutes)
-
-import winRoutes from './routes/winRoutes'
 app.use('/wins', winRoutes)
 
 const PORT = 1999
