@@ -6,8 +6,8 @@ import GameOverPopup from './components/GameOverPopup'
 import UserInfo from './components/UserInfo'
 import { DifficultyLevel } from './types'
 import {
-	arpeggio,
 	get_audio_panning_from_cell_index,
+	play_arpeggios,
 	play_audio,
 } from './utils/audio'
 import { get_new_board_data } from './utils/board'
@@ -77,8 +77,10 @@ function App() {
 	}, [guess])
 
 	function handle_win() {
+		set_guess(undefined)
+		set_selected_cell(undefined)
 		set_is_game_over(true)
-		arpeggio()
+		play_arpeggios()
 	}
 
 	// play audio from cell navigation
@@ -115,7 +117,6 @@ function App() {
 				<DifficultySelect SetDifficulty={set_difficulty} />
 			) : board && solution ? (
 				<Game
-					Difficulty={difficulty}
 					Board={board}
 					Solution={solution}
 					CompletedCells={completed_cells}
