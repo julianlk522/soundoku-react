@@ -28,6 +28,8 @@ export default function Board(props: Props) {
 
 	const handle_keydown = useCallback(
 		(event: React.KeyboardEvent<HTMLTableSectionElement>) => {
+			event.preventDefault()
+
 			if (props.SelectedCell === undefined) {
 				props.SetSelectedCell(0)
 				return
