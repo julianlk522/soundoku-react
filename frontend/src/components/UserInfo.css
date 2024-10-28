@@ -4,6 +4,10 @@ div#user-info {
 	right: 2rem;
 	font-weight: bold;
 
+	p {
+		margin: 0;
+	}
+
 	span#separator {
 		margin: 0 0.5rem;
 	}

@@ -1,4 +1,4 @@
-export function get_name_and_token() {
+function get_name_and_token() {
 	const name = localStorage.getItem('name')
 	const token = localStorage.getItem('token')
 	if (!name || !token) {
@@ -6,3 +6,10 @@ export function get_name_and_token() {
 	}
 	return [name, token]
 }
+
+function unset_name_and_token() {
+	localStorage.removeItem('name')
+	localStorage.removeItem('token')
+}
+
+export { get_name_and_token, unset_name_and_token }

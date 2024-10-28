@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { USERS_ENDPOINT } from '../constants'
+import { unset_name_and_token } from '../utils/localstorage'
 import './UserInfo.css'
 
 interface Props {
@@ -18,6 +19,12 @@ export default function UserInfo(props: Props) {
 				Authorization: 'Bearer ' + props.Token,
 			},
 		})
+		if (resp.status === 401) {
+			unset_name_and_token()
+			return
+		}
+		if (!resp.ok) {
+		}
 		const data = await resp.json()
 		if (!data.total_score) {
 			console.error('Unable to retrieve total score for user')
