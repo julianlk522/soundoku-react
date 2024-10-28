@@ -46,7 +46,7 @@ function fill_cells_to_decrease_difficulty(
 
 function get_desired_filled_nums_count(difficulty?: string) {
 	return difficulty === 'Very Easy'
-		? 80
+		? 70
 		: difficulty === 'Easy'
 		? 60
 		: difficulty === 'Medium'
