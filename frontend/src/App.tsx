@@ -56,7 +56,7 @@ function App() {
 
 	// handle guess
 	useEffect(() => {
-		if (!selected_cell || !guess) return
+		if (selected_cell === undefined || !guess) return
 
 		// play tone of guessed number
 		play_audio(guess - 1, get_audio_panning_from_cell_index(selected_cell))
