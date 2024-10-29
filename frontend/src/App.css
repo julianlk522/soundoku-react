@@ -12,12 +12,12 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	--primary: hsl(240deg, 85%, 80%);
+	--primary: hsl(240deg, 85%, 69%);
 	--primary-soft: hsl(240deg, 100%, 35%, 50%);
 	--primary-ultrasoft: hsl(240deg, 100%, 35%, 10%);
 	--primary-muted: hsl(225deg, 100%, 25%);
-	--secondary: hsl(164deg, 100%, 36%);
-	--secondary-soft: hsl(164deg, 100%, 36%, 50%);
+	--secondary: hsl(164deg, 100%, 45%);
+	--secondary-soft: hsl(164deg, 100%, 36%, 30%);
 	--secondary-muted: hsl(164deg, 100%, 25%);
 	--accent: hsl(330deg, 100%, 50%);
 	--accent-soft: hsl(330deg, 100%, 25%, 25%);
