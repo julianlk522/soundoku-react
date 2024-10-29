@@ -63,7 +63,8 @@ function Cell(Props: Props) {
 			}${above_divider ? ' above-divider' : ''}`}
 			tabIndex={0}
 		>
-			{value}
+			{value && !completed ? <div className='filled-marker'></div> : null}
+			{completed ? value : ''}
 		</td>
 	)
 }
