@@ -24,7 +24,7 @@ function Board(props: Props) {
 			rows.push(props.Board.slice(i * 9, i * 9 + 9))
 		}
 		return rows
-	}, [props.Board])
+	}, [props.Board, props.CompletedCells])
 
 	const handle_keydown = useCallback(
 		(event: React.KeyboardEvent<HTMLTableSectionElement>) => {
